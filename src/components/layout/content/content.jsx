@@ -9,9 +9,8 @@ export default function Content() {
     const [moviesData, setMoviesData] = useState();
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
-    
     const cache = useRef({});
-
+    
     useEffect(() => {
         setLoading(true);
         const getData = async () => {
@@ -20,17 +19,18 @@ export default function Content() {
                 setLoading(false);
                 return;
             }
-
+            
             const data = await fetchData(page);
-
+            
             cache.current[page] = data;
             setMoviesData(data);
             setLoading(false)
         };
         getData();
     }, [page]);
-
-
+    
+    
+    const totalPages =  Math.min(moviesData?.total_pages, 500) ;
 
     return (
 
@@ -46,7 +46,11 @@ export default function Content() {
             
             
             <div className={styles.pagesNavlist}>
-                <NavPages page={page} setPage={setPage} />
+                <NavPages 
+                    page={page} 
+                    setPage={setPage} 
+                    totalPages={totalPages} 
+                />
             </div>
         </div>
 

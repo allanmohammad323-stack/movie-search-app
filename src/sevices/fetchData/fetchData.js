@@ -10,7 +10,7 @@ export const fetchData = async (page) => {
             page: page
         }
     });
-
+    console.log(response.data);
     console.log("data fetched");
     return response.data;
 };
