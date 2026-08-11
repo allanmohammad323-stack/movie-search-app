@@ -1,0 +1,117 @@
+.footerContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 2rem 2.5rem;
+    align-items: center;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 
+        0 4px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 1px 10px rgba(255, 0, 0, 0.2);
+    z-index: 1;
+    margin: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Optional: Add a subtle gradient overlay for more depth */
+.footerContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at 20% 50%,
+        rgba(255, 0, 0, 0.05) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.logo {
+    display: flex;
+    justify-content: left;
+    position: relative;
+    z-index: 1;
+}
+
+.logoImage {
+    width: 200px;
+    max-width: 75%;
+    height: auto;
+    z-index: 2;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+    transition: transform 0.3s ease;
+}
+
+.logoImage:hover {
+    animation: pulse 1s forwards;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        z-index: 2;
+    }
+    100% {
+        transform: scale(1.1);
+        z-index: 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .footerContainer {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 0.75rem;
+        padding: 1.25rem;
+        border-radius: 14px;
+    }
+    
+    .logo {
+        justify-content: center;
+    }
+}
+
+.logoLink {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+.logoLink:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
