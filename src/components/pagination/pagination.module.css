@@ -144,7 +144,7 @@
     margin-top: 1rem;
 }
 
-.pagesNavlist {
+.pagesPaginationlist {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -219,9 +219,6 @@
     transform: translateY(-3px);
 }
 
-
-
-
 /* Disabled state */
 .pageNumber.disabled {
     opacity: 0.4;
@@ -258,7 +255,7 @@
         grid-column: span 3;
     }
     
-    .pagesNavlist {
+    .pagesPaginationlist {
         padding: 20px 16px;
         gap: 8px;
     }
@@ -293,7 +290,7 @@
         grid-column: span 2;
     }
     
-    .pagesNavlist {
+    .pagesPaginationlist {
         gap: 6px;
         padding: 16px 12px;
         border-radius: 12px;
@@ -347,7 +344,7 @@
         grid-column: span 2;
     }
     
-    .pagesNavlist {
+    .pagesPaginationlist {
         gap: 4px;
         padding: 12px 8px;
         border-radius: 10px;
@@ -372,7 +369,7 @@
 /* ============================================ */
 
 @media (prefers-color-scheme: dark) {
-    .pagesNavlist {
+    .pagesPaginationlist {
         background: rgba(0, 0, 0, 0.25);
         border-color: rgba(255, 255, 255, 0.08);
     }
@@ -422,4 +419,177 @@
 .backGroundColor:hover {
     color: #fff;
     box-shadow: 0 0 20px rgb(255, 255, 255);
+}
+
+/* ============================================ */
+/* QUICK NAVIGATION - Inside Glass Container */
+/* ============================================ */
+
+.quickNav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    width: 100%;
+    margin-top: 8px;
+    
+    /* Slightly different glass for separation */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.quickNavLabel {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-right: 2px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.quickNavButton {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 10px;
+    
+    /* Glass morphism for quick nav buttons */
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.quickNavButton:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.quickNavButton:active {
+    transform: translateY(0px) scale(0.95);
+}
+
+.quickNavButton.activeQuick {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 
+        0 4px 20px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-weight: 600;
+    transform: translateY(-2px);
+}
+
+.quickNavButton.activeQuick:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+}
+
+/* Dark mode for quick navigation */
+@media (prefers-color-scheme: dark) {
+    .quickNav {
+        background: rgba(0, 0, 0, 0.15);
+        border-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .quickNavLabel {
+        color: rgba(255, 255, 255, 0.35);
+    }
+    
+    .quickNavButton {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.65);
+    }
+    
+    .quickNavButton:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .quickNavButton.activeQuick {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+}
+
+/* Responsive quick navigation */
+@media (max-width: 768px) {
+    .pagesPaginationlist {
+        padding: 16px 12px;
+        gap: 6px;
+        border-radius: 12px;
+    }
+    
+    .quickNav {
+        gap: 5px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        margin-top: 6px;
+    }
+    
+    .quickNavLabel {
+        font-size: 9px;
+    }
+    
+    .quickNavButton {
+        min-width: 28px;
+        height: 28px;
+        font-size: 10px;
+        padding: 0 7px;
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagesPaginationlist {
+        padding: 12px 8px;
+        gap: 4px;
+        border-radius: 10px;
+    }
+    
+    .quickNav {
+        gap: 3px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        margin-top: 4px;
+    }
+    
+    .quickNavLabel {
+        font-size: 8px;
+        margin-right: 0;
+    }
+    
+    .quickNavButton {
+        min-width: 24px;
+        height: 24px;
+        font-size: 8px;
+        padding: 0 5px;
+        border-radius: 4px;
+    }
 }

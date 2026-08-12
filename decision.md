@@ -40,3 +40,42 @@ Next / Previous is simple and provides good navigation, but numeric pagination g
 ## Final Choice
 
 **Numeric Pagination** provides the best balance between usability, navigation, organization, and performance for this movie application.
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# Search Input Decision
+## Options Considered
+
+I considered two main techniques for controlling the movie search requests:
+
+1. **Debounce**
+2. **Throttle**
+## Decision
+
+I decided to use Debounce for the movie search input.
+
+## Reasons for Choosing Debounce
+Waits Until the User Stops Typing: The search request is sent only after the user stops typing for the chosen amount of time.
+Reduces API Requests: It prevents sending a request for every character the user types.
+Better for Search: Search usually needs the user's final input rather than every intermediate value.
+Improves Performance: Fewer API requests means less unnecessary work for both the application and the API.
+Better User Experience: Users can type normally without triggering a request after every keystroke.
+Simple Behavior: The timer resets whenever the user types again, and the function runs only when the timer completes.
+Why I Did Not Choose Throttle
+**Throttle**
+
+**Throttle runs the function at most once during the chosen time interval, even if the user continues typing.
+
+This means API requests can still be sent while the user is typing. For a movie search, this can result in unnecessary requests for incomplete search terms.
+
+Why Throttle Is Better for Other Events
+
+Throttle is more suitable for events that happen continuously, such as:
+
+* Scrolling
+* Mouse movement
+* Window resizing
+## Final Choice
+
+**Debounce** provides the best balance between API efficiency, performance, and user experience for the movie search input because the request runs after the user stops typing.
