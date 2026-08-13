@@ -6,7 +6,7 @@ export default function Footer() {
         <footer className={Styles.footerWrapper}>
             <div className={Styles.footerContainer}>
                 <div className={Styles.copyrightSection}>
-                    <p>© 2025 All Rights Reserved</p>
+                    <p>© 2026 All Rights Reserved</p>
                 </div>
                 <div className={Styles.logoSection}>
                     <a 

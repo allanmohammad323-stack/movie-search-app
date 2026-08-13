@@ -1,9 +1,11 @@
 import Styles from './header.module.css'
 import Search from '../../search/search'
-export default function Header({ setSearchQuery , setPage , setStartPage }) {
+import Filters from '../../filters/filters'
+export default function Header({ setSearchQuery , setPage , setStartPage , filters , setFilters }) {
     return (
         <div className={Styles.headerContainer}>
            <Search setSearchQuery={setSearchQuery} setPage={setPage} setStartPage={setStartPage} />
+        <Filters filters={filters} setFilters={setFilters} />
         </div>
     )
 }

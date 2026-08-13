@@ -79,3 +79,77 @@ Throttle is more suitable for events that happen continuously, such as:
 ## Final Choice
 
 **Debounce** provides the best balance between API efficiency, performance, and user experience for the movie search input because the request runs after the user stops typing.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Genre Filter and Sort Options Decision
+Options Considered
+I considered four approaches for implementing genre filtering and sorting:
+
+Separate State Variables
+
+Combined Filter Object
+
+URL Query Parameters
+
+Context/Reducer Pattern
+
+Decision
+I decided to use Separate State Variables with useState for genre filter and sort options.
+
+Reasons for Choosing Separate State Variables
+Simple and Clear: Each filter has its own state, making the code easy to read and understand
+
+Independent Control: Genre and sort options can be changed separately without affecting each other
+
+Easy to Reset: Individual filters can be cleared or reset without complex logic
+
+Direct API Mapping: Each state variable maps directly to an API parameter
+
+Quick to Add New Filters: Adding another filter (like year or language) is as simple as adding another useState
+
+No Over-engineering: Keeps the code simple without unnecessary complexity
+
+Easy to Debug: State changes are explicit and easy to track
+
+How They Work Together
+Both filters work together seamlessly by:
+
+Combining genre and sort parameters into a single API request
+
+Each filter change triggers one API call with both filters applied
+
+The API receives both parameters and returns combined results (e.g., "Action movies, sorted by rating")
+
+Why I Did Not Choose the Other Options
+Combined Filter Object
+Requires more complex logic to update individual properties
+
+Harder to reset specific filters
+
+Makes it harder to track which filter actually changed
+
+URL Query Parameters
+Adds complexity with URL syncing
+
+Requires additional routing setup
+
+Overkill for this simple application
+
+Context/Reducer Pattern
+Adds unnecessary boilerplate code
+
+Too complex for just two filters
+
+Makes the code harder for beginners to understand
+
+Performance and User Experience Benefits
+Efficient API Calls: Only one request is made when both filters change
+
+Instant Feedback: Users see results immediately when changing filters
+
+Preserves Other Filters: Changing one filter doesn't reset the other
+
+Clear State: Users can always see which filters are currently applied
+
+Final Choice
+Separate State Variables with useState is the best choice because it provides the simplest, most maintainable solution that still handles both filters working together effectively. It balances simplicity with functionality, making the code easy to understand while delivering a smooth user experience.

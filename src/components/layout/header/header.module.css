@@ -19,6 +19,7 @@
     position: relative;
     overflow: hidden;
     width: auto;
+    gap: 1rem;
 }
 
 .headerContainer::before {

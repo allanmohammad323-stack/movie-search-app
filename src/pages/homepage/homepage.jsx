@@ -2,7 +2,7 @@
 import Header from '../../components/layout/header/header.jsx'
 import Footer from '../../components/layout/footer/footer.jsx'
 import Content from '../../components/layout/content/content.jsx'
-import styles from './homepage.module.css' // Create this file
+import styles from './homepage.module.css'
 
 import { useEffect, useState, useRef } from 'react'
 import {
@@ -19,30 +19,43 @@ export default function HomePage() {
     const popularCache = useRef({})
     const searchCache = useRef({})
 
+    const [filters, setFilters] = useState({
+        genre: '',
+        sortBy: 'popularity.desc',
+        rating: '',
+        year: ''
+    })
+
+    useEffect(() => {
+        setPage(1)
+        setStartPage(1)
+    }, [filters])
     useEffect(() => {
         const getData = async () => {
             setLoading(true)
 
             try {
                 if (!searchQuery.trim()) {
-                    if (popularCache.current[page]) {
-                        setMoviesData(popularCache.current[page])
+                    const cacheKey = `${page}-${JSON.stringify(filters)}`
+                    if (popularCache.current[cacheKey]) {
+                        setMoviesData(popularCache.current[cacheKey])
                         return
                     }
 
-                    const data = await fetchPopularMovies(page)
-                    popularCache.current[page] = data
+
+                    const data = await fetchPopularMovies(page, filters)
+                    popularCache.current[cacheKey] = data
                     setMoviesData(data)
                     return
                 }
 
-                const cacheKey = `${searchQuery}-${page}`
+                const cacheKey = `${searchQuery}-${page}-${JSON.stringify(filters)}`
                 if (searchCache.current[cacheKey]) {
                     setMoviesData(searchCache.current[cacheKey])
                     return
                 }
 
-                const data = await fetchSearchMovies(searchQuery, page)
+                const data = await fetchSearchMovies(searchQuery, page, filters)
                 searchCache.current[cacheKey] = data
                 setMoviesData(data)
 
@@ -54,7 +67,7 @@ export default function HomePage() {
         }
 
         getData()
-    }, [page, searchQuery])
+    }, [page, searchQuery, filters])
 
     return (
         <div className={styles.appContainer}>
@@ -62,6 +75,8 @@ export default function HomePage() {
                 setSearchQuery={setSearchQuery}
                 setPage={setPage}
                 setStartPage={setStartPage}
+                filters={filters}
+                setFilters={setFilters}
             />
 
             <main className={styles.mainContent}>
