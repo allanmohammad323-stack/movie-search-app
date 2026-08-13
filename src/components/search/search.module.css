@@ -1,83 +1,43 @@
-/* search.module.css */
-
 .searchContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  max-width: 50%;
+    width: 100%;
 }
 
 .searchInput {
-  width: 400px;
-  padding: 16px 24px;
-  font-size: 16px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50px;
-  outline: none;
-  transition: all 0.3s ease;
-  
-  /* Glass morphism effect */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .searchInput::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  font-weight: 300;
-  letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .searchInput:focus {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 0 20px rgba(102, 126, 234, 0.3);
-  transform: scale(1.02);
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-.searchInput:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+@media (max-width: 768px) {
+    .searchInput {
+        padding: 0.6rem 0.9rem;
+        font-size: 0.9rem;
+        border-radius: 10px;
+    }
 }
 
-/* Responsive design */
 @media (max-width: 480px) {
-  .searchInput {
-    width: 100%;
-    padding: 14px 20px;
-    font-size: 14px;
-  }
-}
-
-/* Optional: Add a subtle glass reflection effect */
-.searchInput::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    transparent 100%
-  );
-  border-radius: 50px 50px 0 0;
-  pointer-events: none;
-}
-
-/* For dark mode compatibility */
-@media (prefers-color-scheme: dark) {
-  .searchContainer {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  }
+    .searchInput {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+        border-radius: 8px;
+    }
 }

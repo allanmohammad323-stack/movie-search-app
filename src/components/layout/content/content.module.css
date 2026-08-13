@@ -1,10 +1,9 @@
-/* Content Container - Glassmorphism */
 .contentContainer {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 2rem;
-    padding: 2rem;
-    margin: 2rem;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 1rem;
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -17,7 +16,6 @@
     overflow: hidden;
 }
 
-/* Optional: Glass shine effect */
 .contentContainer::before {
     content: '';
     position: absolute;
@@ -34,154 +32,45 @@
     z-index: 0;
 }
 
-/* Movie Cards - Glassmorphism with depth */
-.movieCard {
-    background: rgba(20, 20, 30, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: #fff;
+.pagesNavlist {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 80%;
 }
 
-/* Card glass shine effect */
-.movieCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 40%;
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        transparent 100%
-    );
-    pointer-events: none;
-    border-radius: 16px 16px 0 0;
-}
-
-/* Card hover effect */
-.movieCard:hover {
-    transform: translateY(-8px) scale(1.02);
-    background: rgba(30, 30, 45, 0.5);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.5),
-        0 0 20px rgba(255, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* Movie Poster */
-.poster {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease;
-    position: relative;
-    z-index: 1;
-}
-
-.movieCard:hover .poster {
-    transform: scale(1.03);
-}
-
-/* Movie Title */
-.title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0.75rem 0 0.25rem 0;
-    color: #fff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    position: relative;
-    z-index: 1;
-    line-height: 1.3;
-    min-height: 2.6rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* Rating Badge - Glass style */
-.rating {
-    background: rgba(255, 215, 0, 0.15);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #ffd700;
-    margin-bottom: 0.5rem;
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.1);
-    display: inline-block;
-}
-
-/* ============================================
-   RESPONSIVE BREAKPOINTS
-   ============================================ */
-
-/* 4 columns */
+/* Responsive */
 @media (max-width: 1200px) {
     .contentContainer {
         grid-template-columns: repeat(4, 1fr);
         gap: 1.75rem;
+        padding: 1.75rem;
+        margin: 1.5rem;
     }
 }
 
-/* 3 columns */
 @media (max-width: 992px) {
     .contentContainer {
         grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
         padding: 1.5rem;
-        margin: 1.5rem;
+        margin: 1rem;
     }
 }
 
-/* 2 columns */
 @media (max-width: 768px) {
     .contentContainer {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.25rem;
         padding: 1.25rem;
-        margin: 1rem;
+        margin: 0.75rem;
         border-radius: 18px;
     }
-
-    .movieCard {
-        padding: 0.5rem;
-        border-radius: 12px;
-    }
-
-    .title {
-        font-size: 0.85rem;
-        min-height: 2.2rem;
-    }
-
-    .rating {
-        font-size: 0.75rem;
-        padding: 0.2rem 0.6rem;
+    
+    .pagesNavlist {
+        width: 100%;
     }
 }
 
-/* 2 columns - small screens */
 @media (max-width: 480px) {
     .contentContainer {
         grid-template-columns: repeat(2, 1fr);
@@ -190,52 +79,13 @@
         margin: 0.5rem;
         border-radius: 14px;
     }
-
-    .movieCard {
-        padding: 0.4rem;
-        border-radius: 10px;
-    }
-
-    .title {
-        font-size: 0.7rem;
-        min-height: 1.6rem;
-        margin: 0.5rem 0 0.15rem 0;
-    }
-
-    .rating {
-        font-size: 0.65rem;
-        padding: 0.15rem 0.5rem;
-    }
-
-    .poster {
-        border-radius: 8px;
-    }
 }
 
-/* Optional: Dark mode variant */
-@media (prefers-color-scheme: dark) {
+@media (max-width: 360px) {
     .contentContainer {
-        background: rgba(0, 0, 0, 0.15);
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 12px;
     }
-}
-
-/* Optional: Loading/Empty state glass style */
-.contentContainer:empty {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 1.1rem;
-}
-
-.contentContainer:empty::after {
-    content: 'No movies available';
-    opacity: 0.6;
-}
-.pagesNavlist {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: 80%;
-    
 }

@@ -2,6 +2,7 @@ import styles from './content.module.css'
 import Pagination from '../../pagination/pagination'
 import Load from '../../load/load'
 import NotFound from '../../notfound/notfound'
+import MovieCard from '../../moviecard/moviecard'
 
 export default function Content({
     moviesData,
@@ -10,7 +11,9 @@ export default function Content({
     setPage,
     searchQuery,
     setSearchQuery,
-    setSearch
+    setSearch,
+    startPage,
+    setStartPage
 }) {
     const totalPages = Math.min(
         moviesData?.total_pages || 1,
@@ -24,24 +27,7 @@ export default function Content({
             ) : moviesData?.results?.length > 0 ? (
                 <>
                     {moviesData.results.map((movie) => (
-                        <div
-                            className={styles.movieCard}
-                            key={movie.id}
-                        >
-                            <p className={styles.rating}>
-                                {movie.vote_average.toFixed(1)}
-                            </p>
-
-                            <img
-                                className={styles.poster}
-                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                alt={movie.title}
-                            />
-
-                            <h2 className={styles.title}>
-                                {movie.title}
-                            </h2>
-                        </div>
+                        <MovieCard key={movie.id} movie={movie} />
                     ))}
 
                     <div className={styles.pagesNavlist}>
@@ -49,6 +35,8 @@ export default function Content({
                             page={page}
                             setPage={setPage}
                             totalPages={totalPages}
+                            startPage={startPage}
+                            setStartPage={setStartPage}
                         />
                     </div>
                 </>

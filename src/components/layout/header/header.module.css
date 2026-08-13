@@ -18,9 +18,9 @@
     margin: 1.5rem;
     position: relative;
     overflow: hidden;
+    width: auto;
 }
 
-/* Optional: Add a subtle gradient overlay for more depth */
 .headerContainer::before {
     content: '';
     position: absolute;
@@ -37,12 +37,22 @@
     z-index: 0;
 }
 
-@media (max-width: 600px) {
+/* Make header responsive */
+@media (max-width: 768px) {
     .headerContainer {
         grid-template-columns: 1fr;
         gap: 1rem;
         margin: 0.75rem;
-        padding: 1.25rem;
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .headerContainer {
+        margin: 0.5rem;
+        padding: 1rem;
         border-radius: 14px;
+        gap: 0.75rem;
     }
 }

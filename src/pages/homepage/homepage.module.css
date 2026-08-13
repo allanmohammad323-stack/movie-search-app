@@ -1,0 +1,36 @@
+.appContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.mainContent {
+    flex: 1 0 auto;
+    width: 100%;
+    max-width: 100%; /* Remove max-width limitation */
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.mainContent > * {
+    flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .mainContent {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mainContent {
+        padding: 0.25rem;
+    }
+}

@@ -1,9 +1,10 @@
+// HomePage.jsx
 import Header from '../../components/layout/header/header.jsx'
 import Footer from '../../components/layout/footer/footer.jsx'
 import Content from '../../components/layout/content/content.jsx'
+import styles from './homepage.module.css' // Create this file
 
 import { useEffect, useState, useRef } from 'react'
-
 import {
     fetchPopularMovies,
     fetchSearchMovies
@@ -14,7 +15,7 @@ export default function HomePage() {
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
-
+    const [startPage, setStartPage] = useState(1)
     const popularCache = useRef({})
     const searchCache = useRef({})
 
@@ -23,7 +24,6 @@ export default function HomePage() {
             setLoading(true)
 
             try {
-                // Empty search → popular movies
                 if (!searchQuery.trim()) {
                     if (popularCache.current[page]) {
                         setMoviesData(popularCache.current[page])
@@ -31,26 +31,18 @@ export default function HomePage() {
                     }
 
                     const data = await fetchPopularMovies(page)
-
                     popularCache.current[page] = data
                     setMoviesData(data)
-
                     return
                 }
 
-                // Search movies
                 const cacheKey = `${searchQuery}-${page}`
-
                 if (searchCache.current[cacheKey]) {
                     setMoviesData(searchCache.current[cacheKey])
                     return
                 }
 
-                const data = await fetchSearchMovies(
-                    searchQuery,
-                    page
-                )
-
+                const data = await fetchSearchMovies(searchQuery, page)
                 searchCache.current[cacheKey] = data
                 setMoviesData(data)
 
@@ -65,21 +57,27 @@ export default function HomePage() {
     }, [page, searchQuery])
 
     return (
-        <>
+        <div className={styles.appContainer}>
             <Header
                 setSearchQuery={setSearchQuery}
+                setPage={setPage}
+                setStartPage={setStartPage}
             />
 
-            <Content
-                moviesData={moviesData}
-                loading={loading}
-                page={page}
-                setPage={setPage}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-            />
+            <main className={styles.mainContent}>
+                <Content
+                    moviesData={moviesData}
+                    loading={loading}
+                    page={page}
+                    setPage={setPage}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    startPage={startPage}
+                    setStartPage={setStartPage}
+                />
+            </main>
 
             <Footer />
-        </>
+        </div>
     )
 }
