@@ -387,6 +387,7 @@ function MoviePage() {
 )}
                             <button
                                 className={styles.watchlistButton}
+                                onClick={watchlisthandler}
                             >
                                 + Watchlist
                             </button>

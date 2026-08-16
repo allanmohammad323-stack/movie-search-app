@@ -8,6 +8,7 @@ import Loading from './components/loading/loading'
 
 function App() {
   const MoviePage = React.lazy(() => import('./pages/moviepage/moviepage'))
+  const WatchlistPageLazy = React.lazy(() => import('./pages/watchlistpage/watchlistpage'))
   return (
     <div className="app-container">
     <BrowserRouter>
@@ -18,6 +19,11 @@ function App() {
         <Route path="/movie/:id" element={
           <Suspense fallback={<Loading />}>
             <MoviePage />
+          </Suspense>
+        } />
+        <Route path="/watchlist" element={
+          <Suspense fallback={<Loading />}>
+            <WatchlistPageLazy />
           </Suspense>
         } />
       </Routes>
