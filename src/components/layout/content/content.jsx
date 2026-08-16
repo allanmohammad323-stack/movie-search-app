@@ -1,6 +1,6 @@
 import styles from './content.module.css'
 import Pagination from '../../pagination/pagination'
-import Load from '../../load/load'
+import Loading from '../../loading/loading'
 import NotFound from '../../notfound/notfound'
 import MovieCard from '../../moviecard/moviecard'
 
@@ -23,7 +23,7 @@ export default function Content({
     return (
         <div className={styles.contentContainer}>
             {loading ? (
-                <Load />
+                <Loading />
             ) : moviesData?.results?.length > 0 ? (
                 <>
                     {moviesData.results.map((movie) => (

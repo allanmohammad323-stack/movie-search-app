@@ -77,6 +77,7 @@ export default function HomePage() {
                 setStartPage={setStartPage}
                 filters={filters}
                 setFilters={setFilters}
+                searchQuery={searchQuery}
             />
 
             <main className={styles.mainContent}>

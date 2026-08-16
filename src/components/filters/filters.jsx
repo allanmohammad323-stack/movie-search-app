@@ -1,13 +1,14 @@
 // filters.jsx
 import styles from './filters.module.css'
 
-export default function Filters({ filters, setFilters }) {
+export default function Filters({ filters, setFilters, searchQuery }) {
     return (
         <div className={styles.filterContainer}>
             <select 
                 className={styles.filterBtn}
                 value={filters.sortBy}
                 onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
+                disabled={searchQuery !== ''}
             >
                 <option value="">Sort by</option>
                 <option value="popularity.desc">Popularity</option>
@@ -22,6 +23,7 @@ export default function Filters({ filters, setFilters }) {
                 className={styles.filterBtn}
                 value={filters.genre}
                 onChange={(e) => setFilters({ ...filters, genre: e.target.value })}
+                disabled={searchQuery !== ''}
             >
                 <option value="">Genre</option>
                 <option value="28">Action</option>
@@ -49,6 +51,7 @@ export default function Filters({ filters, setFilters }) {
                 className={styles.filterBtn}
                 value={filters.rating}
                 onChange={(e) => setFilters({ ...filters, rating: e.target.value })}
+                disabled={searchQuery !== ''}
             >
                 <option value="">Rating</option>
                 <option value="9">9+ Stars</option>

@@ -1,6 +1,6 @@
-import styles from './load.module.css';
+import styles from './loading.module.css';
 
-export default function Load() {
+export default function Loading() {
     return (
         <div className={styles.loadContainer}>
             <svg className={styles.svgSpinner} viewBox="0 0 50 50">

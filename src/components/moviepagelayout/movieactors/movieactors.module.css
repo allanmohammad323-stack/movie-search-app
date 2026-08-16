@@ -1,0 +1,154 @@
+.movieActorsWrapper {
+    position: relative;
+    padding: 16px 0 8px 0;
+    background: rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    top: 0;
+    max-height: 300px;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 12px;
+}
+
+.sectionTitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.sectionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, #ff6b35, #ff8e53);
+    border-radius: 2px;
+}
+
+.titleIcon {
+    font-size: 18px;
+}
+
+.scrollControls {
+    display: flex;
+    gap: 6px;
+}
+
+.scrollButton {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+
+.scrollButton:hover {
+    background: rgba(255, 107, 53, 0.3);
+    border-color: #ff6b35;
+    transform: scale(1.05);
+}
+
+.scrollContainer {
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 0 20px 8px 20px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #ff6b35 transparent;
+}
+
+.scrollContainer::-webkit-scrollbar {
+    height: 3px;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #ff6b35, #ff8e53);
+    border-radius: 2px;
+}
+
+.actorsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(120px, 1fr);
+    padding: 4px 0;
+    min-width: max-content;
+}
+
+.actorsGrid > * {
+    transition: all 0.3s ease;
+}
+
+.actorsGrid > *:hover {
+    transform: translateY(-4px) scale(1.03);
+    filter: brightness(1.15);
+    z-index: 5;
+}
+
+.actorsGrid > *:not(:hover) {
+    filter: brightness(0.6) saturate(0.6);
+}
+
+@media (max-width: 768px) {
+    .sectionHeader {
+        padding: 0 12px;
+    }
+    
+    .scrollContainer {
+        padding: 0 12px 6px 12px;
+    }
+    
+    .actorsGrid {
+        grid-auto-columns: minmax(100px, 1fr);
+        gap: 10px;
+    }
+    
+    .sectionTitle {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .movieActorsWrapper {
+        padding: 12px 0 4px 0;
+    }
+    
+    .actorsGrid {
+        grid-auto-columns: minmax(85px, 1fr);
+        gap: 8px;
+    }
+    
+    .scrollButton {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+}

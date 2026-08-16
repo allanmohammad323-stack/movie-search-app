@@ -27,7 +27,13 @@ export default function Search({ setSearchQuery, setPage, setStartPage }) {
                 type="text"
                 placeholder="Search"
                 value={Search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => { setSearch(e.target.value); if (!e.target.value) setSearchQuery(''); }}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        e.target.blur();
+
+                    }
+                }}
             />
         </div>
     )

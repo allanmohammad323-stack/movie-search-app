@@ -1,0 +1,148 @@
+/* actorcard.module.css */
+
+.actorCard {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 100px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.actorCard:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.actorImage {
+  width: 100%;
+  height: 0;
+  padding-bottom: 150%; /* 2:3 ratio (taller than 1.5:1) */
+  overflow: hidden;
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.actorImage img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.actorCard:hover .actorImage img {
+  transform: scale(1.05);
+}
+
+.actorInfo {
+  padding: 12px 14px 14px;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.actorInfo h3 {
+  margin: 0 0 2px 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actorInfo p {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 300;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Optional: Add a subtle gradient overlay for better text readability */
+.actorImage::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .actorCard {
+    max-width: 140px;
+    min-width: 100px;
+    border-radius: 10px;
+  }
+  
+  .actorInfo {
+    padding: 10px 12px 12px;
+  }
+  
+  .actorInfo h3 {
+    font-size: 13px;
+  }
+  
+  .actorInfo p {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .actorCard {
+    max-width: 120px;
+    min-width: 85px;
+    border-radius: 8px;
+  }
+  
+  .actorInfo {
+    padding: 8px 10px 10px;
+  }
+  
+  .actorInfo h3 {
+    font-size: 12px;
+  }
+  
+  .actorInfo p {
+    font-size: 10px;
+  }
+}
+
+/* For very small screens, make cards even more compact */
+@media (max-width: 360px) {
+  .actorCard {
+    max-width: 100px;
+    min-width: 75px;
+  }
+  
+  .actorInfo h3 {
+    font-size: 11px;
+  }
+  
+  .actorInfo p {
+    font-size: 9px;
+  }
+}
+
+/* Dark background fallback for the glass effect */
+/* Add this to your global CSS or parent container */
+/* body { background: #1a1a2e; } or any dark gradient background */
