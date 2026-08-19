@@ -154,13 +154,13 @@
     flex-wrap: wrap;
     
     /* Glass morphism base */
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--bg-card);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--border-color);
     box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 8px 32px var(--shadow-color),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -170,16 +170,16 @@
     padding: 0 12px;
     
     /* Glass morphism for buttons */
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-secondary);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     box-shadow: 
-        0 4px 16px rgba(0, 0, 0, 0.05),
+        0 4px 16px var(--shadow-color),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -187,15 +187,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px var(--shadow-color);
 }
 
 .pageNumber:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: var(--hover-bg);
+    border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 
-        0 8px 24px rgba(0, 0, 0, 0.15),
+        0 8px 24px var(--shadow-color),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -204,10 +204,10 @@
 }
 
 .pageNumber.active {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: var(--accent-color);
+    border-color: var(--accent-color);
     box-shadow: 
-        0 8px 32px rgba(255, 255, 255, 0.2),
+        0 8px 32px var(--accent-color),
         inset 0 1px 0 rgba(255, 255, 255, 0.4);
     color: #ffffff;
     font-weight: 600;
@@ -215,7 +215,7 @@
 }
 
 .pageNumber.active:hover {
-    background: rgba(255, 255, 255, 0.35);
+    background: var(--accent-hover);
     transform: translateY(-3px);
 }
 
@@ -436,23 +436,23 @@
     margin-top: 8px;
     
     /* Slightly different glass for separation */
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-secondary);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
     box-shadow: 
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .quickNavLabel {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-muted);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     margin-right: 2px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px var(--shadow-color);
 }
 
 .quickNavButton {
@@ -461,16 +461,16 @@
     padding: 0 10px;
     
     /* Glass morphism for quick nav buttons */
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--bg-secondary);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     box-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.04),
+        0 2px 8px var(--shadow-color),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
     
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--text-primary);
     font-size: 11px;
     font-weight: 500;
     cursor: pointer;
@@ -478,15 +478,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px var(--shadow-color);
 }
 
 .quickNavButton:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: var(--hover-bg);
+    border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 
-        0 6px 20px rgba(0, 0, 0, 0.1),
+        0 6px 20px var(--shadow-color),
         inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
@@ -495,10 +495,10 @@
 }
 
 .quickNavButton.activeQuick {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.35);
+    background: var(--accent-color);
+    border-color: var(--accent-color);
     box-shadow: 
-        0 4px 20px rgba(255, 255, 255, 0.1),
+        0 4px 20px var(--accent-color),
         inset 0 1px 0 rgba(255, 255, 255, 0.25);
     color: #ffffff;
     font-weight: 600;
@@ -506,7 +506,7 @@
 }
 
 .quickNavButton.activeQuick:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--accent-hover);
     transform: translateY(-3px);
 }
 

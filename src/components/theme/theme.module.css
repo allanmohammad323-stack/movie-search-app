@@ -1,0 +1,226 @@
+/* components/theme.module.css */
+
+/* Main wrapper */
+.themeToggleWrapper {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem;
+  background: var(--bg-secondary, #f3f4f6);
+  border-radius: var(--radius-full, 50px);
+  border: 1px solid var(--border-color, #e5e7eb);
+  transition: all 0.3s ease;
+}
+
+.themeToggleWrapper:hover {
+  border-color: var(--accent-color, #6366f1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Toggle Switch Container */
+.toggleSwitch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.25rem;
+}
+
+/* Hidden checkbox input */
+.toggleInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Slider track */
+.toggleSlider {
+  position: relative;
+  width: 56px;
+  height: 30px;
+  background: var(--bg-primary, #ffffff);
+  border: 2px solid var(--border-color, #e5e7eb);
+  border-radius: 50px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Focus state */
+.toggleSlider.focused {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  border-color: var(--accent-color, #6366f1);
+}
+
+/* Checked state - Dark mode */
+.toggleInput:checked + .toggleSlider {
+  background: var(--accent-color, #6366f1);
+  border-color: var(--accent-color, #6366f1);
+}
+
+/* Move knob when checked */
+.toggleInput:checked + .toggleSlider .toggleKnob {
+  transform: translateX(26px);
+}
+
+/* Rotate icon when toggled */
+.toggleInput:checked + .toggleSlider .toggleKnob .knobIcon {
+  animation: spin 0.4s ease;
+}
+
+/* Knob */
+.toggleKnob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icon inside knob */
+.knobIcon {
+  font-size: 0.7rem;
+  line-height: 1;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Spin animation */
+@keyframes spin {
+  0% { 
+    transform: rotate(0deg) scale(0.8); 
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.1); 
+  }
+  100% { 
+    transform: rotate(360deg) scale(1); 
+  }
+}
+
+/* Hover effects */
+.toggleSwitch:hover .toggleSlider {
+  border-color: var(--accent-color, #6366f1);
+  transform: scale(1.02);
+}
+
+.toggleSwitch:hover .toggleKnob {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Focus-visible for accessibility */
+.toggleInput:focus-visible + .toggleSlider {
+  outline: 2px solid var(--accent-color, #6366f1);
+  outline-offset: 3px;
+}
+
+/* Active/click state */
+.toggleSwitch:active .toggleSlider {
+  transform: scale(0.95);
+}
+
+.toggleSwitch:active .toggleKnob {
+  transform: scale(0.9);
+}
+
+.toggleInput:checked + .toggleSlider:active .toggleKnob {
+  transform: translateX(26px) scale(0.9);
+}
+
+/* Disabled state (if needed) */
+.toggleInput:disabled + .toggleSlider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggleInput:disabled + .toggleSlider .toggleKnob {
+  opacity: 0.7;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .themeToggleWrapper {
+    padding: 0.2rem;
+  }
+
+  .toggleSlider {
+    width: 48px;
+    height: 26px;
+  }
+
+  .toggleKnob {
+    width: 18px;
+    height: 18px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .toggleInput:checked + .toggleSlider .toggleKnob {
+    transform: translateX(22px);
+  }
+
+  .knobIcon {
+    font-size: 0.6rem;
+  }
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .themeToggleWrapper {
+    background: var(--bg-secondary, #1f2937);
+    border-color: var(--border-color, #374151);
+  }
+
+  .toggleKnob {
+    background: #1a1a1a;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .toggleInput:checked + .toggleSlider .toggleKnob {
+    background: white;
+  }
+
+  .toggleSlider {
+    background: var(--bg-primary, #111827);
+    border-color: var(--border-color, #374151);
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .toggleSlider {
+    border-width: 3px;
+  }
+  
+  .toggleInput:checked + .toggleSlider {
+    background: var(--accent-color, #6366f1);
+  }
+  
+  .toggleSlider.focused {
+    outline: 3px solid var(--accent-color, #6366f1);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .toggleSlider,
+  .toggleKnob,
+  .knobIcon {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  
+  .toggleInput:checked + .toggleSlider .toggleKnob .knobIcon {
+    animation: none;
+  }
+}

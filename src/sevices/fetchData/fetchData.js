@@ -4,13 +4,14 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
-const tmdbFetch = async (endpoint, params = {}) => {
+const tmdbFetch = async (endpoint, params = {}, signal) => {
     try {
         const response = await axios.get(`${BASE_URL}${endpoint}`, {
             params: {
                 api_key: API_KEY,
                 ...params
-            }
+            },
+            signal
         });
         return response.data;
     } catch (error) {
@@ -59,11 +60,11 @@ const buildFilterParams = (filters = {}) => {
 };
 
 // Specific functions
-export const fetchPopularMovies = (page = 1, filters = {}) => {
+export const fetchPopularMovies = (page = 1, filters = {}, signal) => {
     return tmdbFetch('/discover/movie', {
         page,
         ...buildFilterParams(filters)
-    });
+    }, signal);
 };
 
 export const fetchTopRated = (page = 1, filters = {}) => {
@@ -72,7 +73,7 @@ export const fetchTopRated = (page = 1, filters = {}) => {
     return tmdbFetch('/movie/top_rated', { page });
 };
 
-export const fetchSearchMovies = (query, page = 1, filters = {}) => {
+export const fetchSearchMovies = (query, page = 1, filters = {}, signal) => {
     const params = {
         query,
         page,
@@ -81,11 +82,15 @@ export const fetchSearchMovies = (query, page = 1, filters = {}) => {
     // Remove sortBy for search as it's not supported by /search/movie
     delete params.sort_by;
     
-    return tmdbFetch('/search/movie', params);
+    return tmdbFetch('/search/movie', params, signal);
 };
-export const fetchMovie = (movieId) => {
+export const fetchMovie = (movieId, signal) => {
     const params = {
         append_to_response: 'credits,videos,images,similar,recommendations'
     };
-    return tmdbFetch(`/movie/${movieId}`, params);
+    return tmdbFetch(`/movie/${movieId}`, params, signal);
+};
+
+export const fetchWatchlistMovie = (movieId, signal) => {
+    return tmdbFetch(`/movie/${movieId}`, {}, signal);
 };

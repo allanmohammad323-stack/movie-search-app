@@ -1,121 +1,209 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styles from './watchlistpage.module.css';
+import { fetchWatchlistMovie } from '../../sevices/fetchData/fetchData';
+import MovieCard from '../../components/moviecard/moviecard';
+import StarRating from '../../components/StarRating/StarRating';
 
-const WatchlistPage = () => {
-    const [watchlist, setWatchlist] = useState([]);
-    const [loading, setLoading] = useState(true);
+const WatchlistPage = ({ watchlist, setWatchlist }) => {
+    const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [initialLoad, setInitialLoad] = useState(true);
+    
+    // Ratings state with localStorage persistence
+    const [ratings, setRatings] = useState(() => {
+        const saved = localStorage.getItem('movieRatings');
+        return saved ? JSON.parse(saved) : {};
+    });
+    
+    const fetchedIds = useRef(new Set());
+    const movieCache = useRef(new Map());
+    const prevWatchlistRef = useRef(watchlist);
+    const isFetchingRef = useRef(false);
 
-    // Load watchlist from localStorage on mount
+    // Save ratings to localStorage
     useEffect(() => {
-        const loadWatchlist = () => {
+        localStorage.setItem('movieRatings', JSON.stringify(ratings));
+    }, [ratings]);
+
+    const fetchSingleMovie = useCallback(async (id) => {
+        if (movieCache.current.has(id)) {
+            return movieCache.current.get(id);
+        }
+        
+        try {
+            const movie = await fetchWatchlistMovie(id);
+            if (movie) {
+                movieCache.current.set(id, movie);
+                fetchedIds.current.add(id);
+                return movie;
+            }
+        } catch (error) {
+            console.error(`Error fetching movie ${id}:`, error);
+        }
+        return null;
+    }, []);
+
+    // Load initial watchlist
+    useEffect(() => {
+        const loadInitialMovies = async () => {
+            if (watchlist.length === 0) {
+                setMovies([]);
+                setLoading(false);
+                setInitialLoad(false);
+                return;
+            }
+
+            setLoading(true);
+            setInitialLoad(true);
+
             try {
-                const savedWatchlist = localStorage.getItem('watchlist');
-                if (savedWatchlist) {
-                    const parsed = JSON.parse(savedWatchlist);
-                    setWatchlist(Array.isArray(parsed) ? parsed : []);
-                } else {
-                    setWatchlist([]);
-                }
+                const movieData = await Promise.all(
+                    watchlist.map(id => fetchSingleMovie(id))
+                );
+
+                const validMovies = movieData.filter(movie => movie !== null);
+                setMovies(validMovies);
             } catch (error) {
-                console.error('Error loading watchlist:', error);
-                setWatchlist([]);
+                console.error('Error fetching watchlist movies:', error);
             } finally {
                 setLoading(false);
+                setInitialLoad(false);
             }
         };
 
-        loadWatchlist();
-    }, []);
+        if (watchlist.length === 0) {
+            setMovies([]);
+            setLoading(false);
+            setInitialLoad(false);
+        } else if (movies.length === 0 && initialLoad) {
+            loadInitialMovies();
+        }
+    }, []); // Only run once on mount
 
-    // Save to localStorage whenever watchlist changes
+    // Handle watchlist changes
     useEffect(() => {
-        if (!loading) {
+        if (initialLoad) return;
+        if (isFetchingRef.current) return;
+        
+        const prev = prevWatchlistRef.current;
+        const hasChanged = prev.length !== watchlist.length || 
+            prev.some((id, index) => id !== watchlist[index]);
+        
+        if (!hasChanged) {
+            return;
+        }
+
+        prevWatchlistRef.current = [...watchlist];
+
+        if (watchlist.length === 0) {
+            setMovies([]);
+            setLoading(false);
+            return;
+        }
+
+        const currentMovieIds = new Set(movies.map(m => m.id));
+        const newIds = watchlist.filter(id => !currentMovieIds.has(id));
+        
+        const movieIds = new Set(watchlist);
+        const removedMovies = movies.filter(m => !movieIds.has(m.id));
+        
+        if (newIds.length === 0 && removedMovies.length === 0) {
+            return;
+        }
+
+        const fetchNewMovies = async () => {
+            isFetchingRef.current = true;
+            setLoading(true);
+            
             try {
-                localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                const newMoviesData = await Promise.all(
+                    newIds.map(id => fetchSingleMovie(id))
+                );
+                
+                const validNewMovies = newMoviesData.filter(m => m !== null);
+                const existingMovies = movies.filter(m => watchlist.includes(m.id));
+                const updatedMovies = [...existingMovies, ...validNewMovies];
+                
+                const sortedMovies = watchlist
+                    .map(id => updatedMovies.find(m => m?.id === id))
+                    .filter(m => m !== undefined);
+                
+                setMovies(sortedMovies);
             } catch (error) {
-                console.error('Error saving watchlist:', error);
+                console.error('Error fetching new movies:', error);
+            } finally {
+                setLoading(false);
+                isFetchingRef.current = false;
             }
-        }
-    }, [watchlist, loading]);
+        };
 
-    // Get movie IDs from watchlist
-    const movieIds = useMemo(() => {
-        return watchlist.map(item => item.id);
-    }, [watchlist]);
+        fetchNewMovies();
+    }, [watchlist, initialLoad, fetchSingleMovie, movies]);
 
-    // Add movie to watchlist
-    const addMovie = useCallback((movie) => {
-        if (!movie || !movie.id) return;
-
-        setWatchlist(prev => {
-            // Check if movie already exists
-            if (prev.some(item => item.id === movie.id)) {
-                return prev;
-            }
-            return [...prev, { ...movie, addedAt: new Date().toISOString() }];
-        });
+    const handleRate = useCallback((movieId, rating) => {
+        setRatings(prev => ({
+            ...prev,
+            [movieId]: rating
+        }));
     }, []);
 
-    // Remove movie from watchlist
+    const getRating = useCallback((movieId) => {
+        return ratings[movieId] || 0;
+    }, [ratings]);
+
     const removeMovie = useCallback((movieId) => {
-        setWatchlist(prev => prev.filter(item => item.id !== movieId));
-    }, []);
+        setWatchlist(prev => {
+            const newList = prev.filter(id => id !== movieId);
+            prevWatchlistRef.current = newList;
+            return newList;
+        });
+        setMovies(prev => prev.filter(movie => movie.id !== movieId));
+        setRatings(prev => {
+            const newRatings = { ...prev };
+            delete newRatings[movieId];
+            return newRatings;
+        });
+    }, [setWatchlist]);
 
-    // Clear entire watchlist
     const clearWatchlist = useCallback(() => {
-        if (window.confirm('Are you sure you want to clear your watchlist?')) {
-            setWatchlist([]);
-        }
-    }, []);
+        setWatchlist([]);
+        setMovies([]);
+        prevWatchlistRef.current = [];
+        movieCache.current.clear();
+        fetchedIds.current.clear();
+        setRatings({});
+    }, [setWatchlist]);
 
-    // Check if movie is in watchlist
-    const isInWatchlist = useCallback((movieId) => {
-        return watchlist.some(item => item.id === movieId);
-    }, [watchlist]);
-
-    // Get watchlist count
-    const watchlistCount = useMemo(() => {
-        return watchlist.length;
-    }, [watchlist]);
-
-    // Format date
-    const formatDate = useCallback((dateString) => {
-        try {
-            return new Date(dateString).toLocaleDateString('en-US', {
+    const formatDate = useCallback((date) => {
+        if (!date) return 'N/A';
+        return new Date(date).toLocaleDateString(
+            'en-US',
+            {
                 year: 'numeric',
-                month: 'short',
+                month: 'long',
                 day: 'numeric'
-            });
-        } catch {
-            return 'Invalid date';
-        }
-    }, []);
-
-    // Simulate fetching movie details (replace with actual API call)
-    const fetchMovieDetails = useCallback(async (movieId) => {
-        // This is a placeholder - replace with your actual API call
-        // Example: const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}`);
-        // return await response.json();
-        return { id: movieId, title: `Movie ${movieId}`, poster_path: null };
-    }, []);
-
-    if (loading) {
-        return (
-            <div className={styles.container}>
-                <div className={styles.loader}>Loading watchlist...</div>
-            </div>
+            }
         );
-    }
+    }, []);
+
+    const watchlistCount = watchlist.length;
 
     return (
         <div className={styles.container}>
             <div className={styles.glassCard}>
                 <div className={styles.header}>
-                    <h1 className={styles.title}>🎬 My Watchlist</h1>
+                    <h1 className={styles.title}>
+                        🎬 My Watchlist
+                    </h1>
+
                     <div className={styles.stats}>
-                        <span className={styles.count}>{watchlistCount} movies</span>
+                        <span className={styles.count}>
+                            {watchlistCount} {watchlistCount === 1 ? 'movie' : 'movies'}
+                        </span>
+
                         {watchlistCount > 0 && (
-                            <button 
+                            <button
+                                type="button"
                                 className={styles.clearBtn}
                                 onClick={clearWatchlist}
                             >
@@ -125,7 +213,12 @@ const WatchlistPage = () => {
                     </div>
                 </div>
 
-                {watchlistCount === 0 ? (
+                {loading ? (
+                    <div className={styles.emptyState}>
+                        <div className={styles.loadingSpinner}>⏳</div>
+                        <h3>Loading watchlist...</h3>
+                    </div>
+                ) : watchlistCount === 0 ? (
                     <div className={styles.emptyState}>
                         <div className={styles.emptyIcon}>📭</div>
                         <h3>Your watchlist is empty</h3>
@@ -133,43 +226,36 @@ const WatchlistPage = () => {
                     </div>
                 ) : (
                     <div className={styles.movieGrid}>
-                        {watchlist.map((movie) => (
-                            <div key={movie.id} className={styles.movieCard}>
-                                <div className={styles.posterContainer}>
-                                    {movie.poster_path ? (
-                                        <img 
-                                            src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                                            alt={movie.title}
-                                            className={styles.poster}
-                                            loading="lazy"
-                                        />
-                                    ) : (
-                                        <div className={styles.noPoster}>No Image</div>
-                                    )}
-                                    <button
-                                        className={styles.removeBtn}
-                                        onClick={() => removeMovie(movie.id)}
-                                        aria-label="Remove from watchlist"
-                                    >
-                                        ×
-                                    </button>
+                        {movies.map(movie => (
+                            <div key={movie.id} className={styles.movieCardWrapper}>
+                                <MovieCard movie={movie} />
+                                
+                                <div className={styles.ratingContainer}>
+                                    <StarRating
+                                        initialRating={getRating(movie.id)}
+                                        onRate={handleRate}
+                                        movieId={movie.id}
+                                        totalStars={5}
+                                        size="medium"
+                                    />
+                                    <span className={styles.ratingLabel}>
+                                        {getRating(movie.id) > 0
+                                            ? `${getRating(movie.id)}/5`
+                                            : 'Rate this movie'}
+                                    </span>
                                 </div>
-                                <div className={styles.movieInfo}>
-                                    <h3 className={styles.movieTitle}>{movie.title || 'Unknown Title'}</h3>
-                                    {movie.release_date && (
-                                        <p className={styles.releaseDate}>
-                                            📅 {formatDate(movie.release_date)}
-                                        </p>
-                                    )}
-                                    {movie.vote_average && (
-                                        <p className={styles.rating}>
-                                            ⭐ {movie.vote_average.toFixed(1)}/10
-                                        </p>
-                                    )}
-                                    <p className={styles.addedDate}>
-                                        Added: {formatDate(movie.addedAt)}
-                                    </p>
-                                </div>
+
+                                <button
+                                    type="button"
+                                    className={styles.removeBtn}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeMovie(movie.id);
+                                    }}
+                                    aria-label="Remove from watchlist"
+                                >
+                                    ×
+                                </button>
                             </div>
                         ))}
                     </div>

@@ -6,20 +6,20 @@
   justify-content: center;
   gap: 2rem;
   padding: 1rem 2.5rem;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--navbar-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px 0 var(--shadow-color);
   max-width: fit-content;
   margin: 1.5rem auto;
   transition: all 0.3s ease;
 }
 
 .glassContainer:hover {
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 40px 0 rgba(31, 38, 135, 0.3);
+  background: var(--bg-card);
+  box-shadow: 0 10px 40px 0 var(--shadow-color);
 }
 
 .glassLink {
@@ -27,12 +27,12 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.6rem 1.5rem;
-  color: #ffffff;
+  color: var(--text-primary);
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: 500;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-secondary);
   transition: all 0.3s ease;
   letter-spacing: 0.3px;
   position: relative;
@@ -41,9 +41,9 @@
 }
 
 .glassLink:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--hover-bg);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px 0 rgba(31, 38, 135, 0.15);
+  box-shadow: 0 4px 15px 0 var(--shadow-color);
 }
 
 .glassLink:active {
@@ -53,8 +53,12 @@
 .glassLink img {
   width: 24px;
   height: 24px;
-  filter: brightness(0) invert(1);
+  filter: brightness(0);
   transition: transform 0.3s ease;
+}
+
+[data-theme="dark"] .glassLink img {
+  filter: brightness(0) invert(1);
 }
 
 .glassLink:hover img {
@@ -63,9 +67,10 @@
 
 /* Active link styling */
 .glassLink.active {
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--accent-color);
+  color: white;
+  box-shadow: 0 0 20px var(--accent-color);
+  border: 1px solid var(--accent-color);
 }
 
 /* Mobile responsiveness */

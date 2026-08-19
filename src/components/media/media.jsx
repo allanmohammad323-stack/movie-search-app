@@ -136,6 +136,8 @@ const Media = ({ mediaData }) => {
                                                 : `${activeTab} ${index + 1}`
                                         }
                                         className={styles.mediaImage}
+                                        loading="lazy"
+                                        decoding="async"
                                     />
 
                                     {isVideo && (
@@ -196,6 +198,7 @@ const Media = ({ mediaData }) => {
                                     src={`https://www.youtube.com/embed/${selectedMedia.item.key}?autoplay=1`}
                                     title={selectedMedia.item.name || 'Movie video'}
                                     className={styles.videoPlayer}
+                                    loading="lazy"
                                     allow="
                                         autoplay;
                                         encrypted-media;

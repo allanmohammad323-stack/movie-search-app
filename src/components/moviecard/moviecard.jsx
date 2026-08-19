@@ -1,6 +1,7 @@
+import React from 'react'
 import styles from './moviecard.module.css'
 import { useNavigate } from 'react-router-dom'
-export default function MovieCard({ movie }) {
+function MovieCard({ movie }) {
     // Fallback for movies without poster
     const posterUrl = movie.poster_path 
         ? `https://image.tmdb.org/t/p/w342${movie.poster_path}`
@@ -16,6 +17,9 @@ export default function MovieCard({ movie }) {
                     src={posterUrl}
                     alt={movie.title}
                     loading="lazy"
+                    decoding="async"
+                    width="342"
+                    height="513"
                 />
                 <div className={styles.ratingBadge}>
                     ⭐ {movie.vote_average?.toFixed(1) || 'N/A'}
@@ -28,3 +32,5 @@ export default function MovieCard({ movie }) {
         </div>
     )
 }
+
+export default React.memo(MovieCard)

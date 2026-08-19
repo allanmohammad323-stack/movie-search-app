@@ -1,8 +1,11 @@
 import styles from './background.module.css'
 import secondStyles from './secondBg.module.css'
+import { useTheme } from '../../context/themecontext/themecontext.jsx'
 
 export default function Background(){
-     const bgClass = Math.random() > 0.5 ? styles : secondStyles;
+    const { isDark } = useTheme()
+    const bgClass = isDark ? styles : secondStyles;
+    
     return(
         <div className={bgClass.movieBg}>
             <div className={bgClass.blob}></div>

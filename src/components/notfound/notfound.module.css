@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--bg-primary);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px;
     position: relative;
@@ -41,10 +41,10 @@
 
 .content {
     text-align: center;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-card);
     padding: 60px 80px;
     border-radius: 30px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 30px 80px var(--shadow-color);
     position: relative;
     z-index: 1;
     animation: slideUp 0.8s ease-out;
@@ -76,7 +76,7 @@
     display: block;
     width: 12px;
     height: 16px;
-    background: #333;
+    background: var(--text-primary);
     border-radius: 50%;
     animation: blink 4s infinite;
 }
@@ -88,7 +88,7 @@
     transform: translateX(-50%);
     width: 20px;
     height: 10px;
-    border: 3px solid #333;
+    border: 3px solid var(--text-primary);
     border-top: none;
     border-radius: 0 0 20px 20px;
     animation: smile 3s ease-in-out infinite;
@@ -98,7 +98,7 @@
     font-size: 30px;
     font-weight: 900;
     margin: 10px 0 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -107,14 +107,14 @@
 
 .errorTitle {
     font-size: 28px;
-    color: #333;
+    color: var(--text-primary);
     margin: 10px 0;
     font-weight: 700;
 }
 
 .errorText {
     font-size: 16px;
-    color: #666;
+    color: var(--text-secondary);
     line-height: 1.6;
     margin: 15px 0 30px;
 }
@@ -123,21 +123,21 @@
     margin-top: 30px;
     display: inline-block;
     padding: 14px 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
     color: white;
     text-decoration: none;
     border-radius: 50px;
     font-weight: 600;
     font-size: 16px;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 20px var(--accent-color);
     border: none;
     cursor: pointer;
 }
 
 .homeButton:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 8px 30px var(--accent-hover);
     color: white;
 }
 

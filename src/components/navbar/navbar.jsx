@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './navbar.module.css';
 import watchListIcon from '../../assets/img/watchlist.png'
+import ThemeToggle from '../theme/theme.jsx'
 const Navigation = () => {
   return (
     <nav className={styles.glassContainer}>
@@ -11,6 +12,7 @@ const Navigation = () => {
       <Link to="/watchlist" className={styles.glassLink}>
         <img src={watchListIcon} alt="Watchlist" />Watchlist
       </Link>
+      <ThemeToggle />
     </nav>
   );
 };
