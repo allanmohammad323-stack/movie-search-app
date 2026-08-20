@@ -1,7 +1,23 @@
 import styles from './notfound.module.css'
 import { useNavigate } from 'react-router-dom'
-export default function NotFound({ message ,setSearchQuery }) {
+export default function NotFound({
+    message,
+    setSearchQuery,
+    onRetry,
+    retryLabel = 'Go Back Home'
+}) {
     const navigate = useNavigate()
+
+    const handleAction = () => {
+        if (onRetry) {
+            onRetry()
+            return
+        }
+
+        if (setSearchQuery) setSearchQuery('')
+        navigate('/')
+    }
+
     return (
         <div className={styles.notFound}>
             <div className={styles.content}>
@@ -16,8 +32,8 @@ export default function NotFound({ message ,setSearchQuery }) {
                     {message || "The page you're looking for seems to have vanished into thin air."}
                 </h1>
 
-                <button onClick={() => {if(setSearchQuery) setSearchQuery(''); navigate('/')}} className={styles.homeButton}>
-                    🏠 Go Back Home
+                <button onClick={handleAction} className={styles.homeButton}>
+                    {onRetry ? '↻' : '🏠'} {retryLabel}
                 </button>
             </div>
         </div>

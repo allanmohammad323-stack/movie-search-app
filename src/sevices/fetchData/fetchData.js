@@ -4,6 +4,34 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
+export const getTmdbErrorMessage = (error) => {
+    if (axios.isCancel(error)) return null;
+
+    if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 401 || status === 403) {
+            return 'TMDB rejected the request. Check the API key.';
+        }
+
+        if (status === 429) {
+            return 'Too many requests. Please wait a moment and try again.';
+        }
+
+        if (status >= 500) {
+            return 'TMDB is temporarily unavailable. Please try again shortly.';
+        }
+
+        return data?.status_message || 'TMDB could not complete the request.';
+    }
+
+    if (error.request) {
+        return 'Unable to reach TMDB. Check your internet connection and try again.';
+    }
+
+    return 'Something went wrong. Please try again.';
+};
+
 const tmdbFetch = async (endpoint, params = {}, signal) => {
     try {
         const response = await axios.get(`${BASE_URL}${endpoint}`, {
@@ -11,11 +39,14 @@ const tmdbFetch = async (endpoint, params = {}, signal) => {
                 api_key: API_KEY,
                 ...params
             },
+            timeout: 10000,
             signal
         });
         return response.data;
     } catch (error) {
-        console.error(`Error fetching from ${endpoint}:`, error);
+        if (!axios.isCancel(error)) {
+            console.error(`Error fetching from ${endpoint}:`, error);
+        }
         throw error;
     }
 };

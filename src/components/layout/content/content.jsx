@@ -11,6 +11,8 @@ export default function Content({
     setPage,
     searchQuery,
     setSearchQuery,
+    error,
+    onRetry,
     setSearch,
     startPage,
     setStartPage
@@ -22,7 +24,13 @@ export default function Content({
 
     return (
         <div className={styles.contentContainer}>
-            {loading ? (
+            {error ? (
+                <NotFound
+                    message={error}
+                    onRetry={onRetry}
+                    retryLabel="Try again"
+                />
+            ) : loading ? (
                 <Loading />
             ) : moviesData?.results?.length > 0 ? (
                 <>

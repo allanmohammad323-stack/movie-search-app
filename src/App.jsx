@@ -16,6 +16,11 @@ function App() {
 
     return saved ? JSON.parse(saved) : []
 })
+ const [favorites, setFavorites] = useState(() => {
+  const saved = localStorage.getItem('favorites')
+
+  return saved ? JSON.parse(saved) : []
+})
 
 useEffect(() => {
     localStorage.setItem(
@@ -23,6 +28,10 @@ useEffect(() => {
         JSON.stringify(watchlist)
     )
 }, [watchlist])
+
+useEffect(() => {
+  localStorage.setItem('favorites', JSON.stringify(favorites))
+}, [favorites])
 
 const watchlisthandler = useCallback((movie) => {
     if (!movie.id) return
@@ -34,6 +43,18 @@ const watchlisthandler = useCallback((movie) => {
 
         return [...prev, movie.id]
     })
+}, [])
+
+const favoriteHandler = useCallback((movie) => {
+  if (!movie?.id) return
+
+  setFavorites(prev => {
+    if (prev.includes(movie.id)) {
+      return prev.filter(id => id !== movie.id)
+    }
+
+    return [...prev, movie.id]
+  })
 }, [])
 
   return (
@@ -49,6 +70,8 @@ const watchlisthandler = useCallback((movie) => {
               <MoviePage 
                 watchlisthandler={watchlisthandler} 
                 watchlist={watchlist} 
+                favoriteHandler={favoriteHandler}
+                favorites={favorites}
               />
             </Suspense>
           } />

@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styles from './watchlistpage.module.css';
-import { fetchWatchlistMovie } from '../../sevices/fetchData/fetchData';
+import {
+    fetchWatchlistMovie,
+    getTmdbErrorMessage
+} from '../../sevices/fetchData/fetchData';
 import MovieCard from '../../components/moviecard/moviecard';
 import StarRating from '../../components/StarRating/StarRating';
 
@@ -8,6 +11,8 @@ const WatchlistPage = ({ watchlist, setWatchlist }) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [initialLoad, setInitialLoad] = useState(true);
+    const [error, setError] = useState(null);
+    const [loadVersion, setLoadVersion] = useState(0);
     
     // Ratings state with localStorage persistence
     const [ratings, setRatings] = useState(() => {
@@ -37,10 +42,10 @@ const WatchlistPage = ({ watchlist, setWatchlist }) => {
                 fetchedIds.current.add(id);
                 return movie;
             }
+            return null;
         } catch (error) {
-            console.error(`Error fetching movie ${id}:`, error);
+            throw error;
         }
-        return null;
     }, []);
 
     // Load initial watchlist
@@ -55,6 +60,7 @@ const WatchlistPage = ({ watchlist, setWatchlist }) => {
 
             setLoading(true);
             setInitialLoad(true);
+            setError(null);
 
             try {
                 const movieData = await Promise.all(
@@ -65,6 +71,7 @@ const WatchlistPage = ({ watchlist, setWatchlist }) => {
                 setMovies(validMovies);
             } catch (error) {
                 console.error('Error fetching watchlist movies:', error);
+                setError(getTmdbErrorMessage(error));
             } finally {
                 setLoading(false);
                 setInitialLoad(false);
@@ -78,7 +85,7 @@ const WatchlistPage = ({ watchlist, setWatchlist }) => {
         } else if (movies.length === 0 && initialLoad) {
             loadInitialMovies();
         }
-    }, []); // Only run once on mount
+    }, [loadVersion]);
 
     // Handle watchlist changes
     useEffect(() => {
@@ -131,6 +138,7 @@ const WatchlistPage = ({ watchlist, setWatchlist }) => {
                 setMovies(sortedMovies);
             } catch (error) {
                 console.error('Error fetching new movies:', error);
+                setError(getTmdbErrorMessage(error));
             } finally {
                 setLoading(false);
                 isFetchingRef.current = false;
@@ -139,6 +147,13 @@ const WatchlistPage = ({ watchlist, setWatchlist }) => {
 
         fetchNewMovies();
     }, [watchlist, initialLoad, fetchSingleMovie, movies]);
+
+    const retryLoading = useCallback(() => {
+        setError(null);
+        setMovies([]);
+        setInitialLoad(true);
+        setLoadVersion(version => version + 1);
+    }, []);
 
     const handleRate = useCallback((movieId, rating) => {
         setRatings(prev => ({
@@ -213,7 +228,19 @@ const WatchlistPage = ({ watchlist, setWatchlist }) => {
                     </div>
                 </div>
 
-                {loading ? (
+                {error ? (
+                    <div className={styles.emptyState} role="alert">
+                        <div className={styles.emptyIcon}>!</div>
+                        <h3>{error}</h3>
+                        <button
+                            type="button"
+                            className={styles.clearBtn}
+                            onClick={retryLoading}
+                        >
+                            Try again
+                        </button>
+                    </div>
+                ) : loading ? (
                     <div className={styles.emptyState}>
                         <div className={styles.loadingSpinner}>⏳</div>
                         <h3>Loading watchlist...</h3>

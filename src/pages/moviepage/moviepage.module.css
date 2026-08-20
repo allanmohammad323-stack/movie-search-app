@@ -33,9 +33,9 @@
 /* ========================================= */
 .movieLayout {
     display: grid;
-    grid-template-columns: 300px minmax(0, 1fr);
-    gap: 2.5rem;
-    align-items: start;
+    grid-template-columns: minmax(320px, 0.95fr) minmax(0, 2.5fr);
+    gap: 2rem;
+    align-items: stretch;
     width: 100%;
 }
 
@@ -63,12 +63,13 @@
     /* Ensures card stretches to match details */
     display: flex;
     align-items: stretch;
-    height: 100%;
+    height: auto;
+    flex: 0 0 auto;
 }
 
 .movieCardWrapper > * {
     width: 100%;
-    max-width: 300px;
+    max-width: none;
     border-radius: 20px;
     object-fit: cover;
 }
@@ -816,7 +817,10 @@
     width: 100%;
     position: sticky;
     top: 2rem;
-    align-self: start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
 }
 
 
@@ -837,6 +841,8 @@
     background: rgba(255, 215, 0, 0.08);
     border: 1px solid rgba(255, 215, 0, 0.15);
     border-radius: 14px;
+    flex: 1;
+    min-height: 110px;
 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);

@@ -1,6 +1,9 @@
 import styles from './moviepage.module.css'
 import { useParams, useNavigate } from 'react-router-dom'
-import { fetchMovie } from '../../sevices/fetchData/fetchData'
+import {
+    fetchMovie,
+    getTmdbErrorMessage
+} from '../../sevices/fetchData/fetchData'
 
 import React, {
     Suspense,
@@ -19,12 +22,19 @@ const MovieActors = React.lazy(() =>
     import('../../components/moviepagelayout/movieactors/movieactors')
 )
 
-function MoviePage({ watchlisthandler, watchlist }) {
+function MoviePage({
+    watchlisthandler,
+    watchlist,
+    favoriteHandler,
+    favorites
+}) {
     const { id } = useParams()
     const navigate = useNavigate()
 
     const [movie, setMovie] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [retryCount, setRetryCount] = useState(0)
     const [showTrailer, setShowTrailer] = useState(false)
     
     // Add ratings state with localStorage persistence
@@ -52,24 +62,34 @@ function MoviePage({ watchlisthandler, watchlist }) {
     }, [ratings]);
 
     useEffect(() => {
+        const controller = new AbortController()
+
         window.scrollTo(0, 0);
 
         setLoading(true)
         setMovie(null)
+        setError(null)
 
-        fetchMovie(id)
+        fetchMovie(id, controller.signal)
             .then((data) => {
                 console.log('MOVIE:', data)
                 setMovie(data)
             })
             .catch((error) => {
-                console.error('Error fetching movie:', error)
-                setMovie(null)
+                if (!controller.signal.aborted) {
+                    console.error('Error fetching movie:', error)
+                    setMovie(null)
+                    setError(getTmdbErrorMessage(error))
+                }
             })
             .finally(() => {
-                setLoading(false)
+                if (!controller.signal.aborted) {
+                    setLoading(false)
+                }
             })
-    }, [id])
+
+        return () => controller.abort()
+    }, [id, retryCount])
 
     // Navigate to movie detail page
     const handleMovieClick = (movieId) => {
@@ -83,7 +103,9 @@ function MoviePage({ watchlisthandler, watchlist }) {
     if (!movie) {
         return (
             <NotFound
-                message={`No movies found With ID ${id}`}
+                message={error || `No movies found With ID ${id}`}
+                onRetry={error ? () => setRetryCount(count => count + 1) : undefined}
+                retryLabel={error ? 'Try again' : undefined}
             />
         )
     }
@@ -433,8 +455,12 @@ function MoviePage({ watchlisthandler, watchlist }) {
                                 </button>
                                 <button
                                     className={styles.favoriteButton}
+                                    onClick={() => favoriteHandler(movie)}
+                                    aria-pressed={favorites?.includes(movie.id)}
                                 >
-                                    ♥ Favorite
+                                    {favorites?.includes(movie.id)
+                                        ? '♥ Favorited'
+                                        : '♡ Favorite'}
                                 </button>
                             </div>
                         </div>

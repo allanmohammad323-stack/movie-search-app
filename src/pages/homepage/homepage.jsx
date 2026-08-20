@@ -8,7 +8,8 @@ import { useEffect, useState, useRef } from 'react'
 import { useTheme } from '../../context/themecontext/themecontext'
 import {
     fetchPopularMovies,
-    fetchSearchMovies
+    fetchSearchMovies,
+    getTmdbErrorMessage
 } from '../../sevices/fetchData/fetchData'
 
 export default function HomePage() {
@@ -18,6 +19,8 @@ export default function HomePage() {
     const [moviesData, setMoviesData] = useState()
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const [retryCount, setRetryCount] = useState(0)
     const [searchQuery, setSearchQuery] = useState('')
     const [startPage, setStartPage] = useState(1)
     const popularCache = useRef({})
@@ -47,6 +50,7 @@ export default function HomePage() {
 
         const getData = async () => {
             setLoading(true)
+            setError(null)
 
             try {
                 if (!searchQuery.trim()) {
@@ -80,6 +84,8 @@ export default function HomePage() {
             } catch (error) {
                 if (!controller.signal.aborted) {
                     console.error('Error fetching data:', error)
+                    setMoviesData(undefined)
+                    setError(getTmdbErrorMessage(error))
                 }
             } finally {
                 if (!controller.signal.aborted) {
@@ -91,7 +97,7 @@ export default function HomePage() {
         getData()
 
         return () => controller.abort()
-    }, [page, searchQuery, filters])
+    }, [page, searchQuery, filters, retryCount])
 
     return (
         <div className={`${styles.appContainer} ${isDark ? styles.dark : styles.light}`}>
@@ -112,6 +118,8 @@ export default function HomePage() {
                     setPage={setPage}
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
+                    error={error}
+                    onRetry={() => setRetryCount(count => count + 1)}
                     startPage={startPage}
                     setStartPage={setStartPage}
                 />
