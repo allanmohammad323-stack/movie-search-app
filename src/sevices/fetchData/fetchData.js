@@ -90,10 +90,27 @@ const buildFilterParams = (filters = {}) => {
     return params;
 };
 
+const fetchMoviesPerPage = async (endpoint, page, params, signal) => {
+    const moviesPerPage = 22;
+    const startIndex = (page - 1) * moviesPerPage;
+    const firstTmdbPage = Math.floor(startIndex / 20) + 1;
+    const resultOffset = startIndex % 20;
+    const responses = await Promise.all([
+        tmdbFetch(endpoint, { ...params, page: firstTmdbPage }, signal),
+        tmdbFetch(endpoint, { ...params, page: firstTmdbPage + 1 }, signal)
+    ]);
+    const allResults = responses.flatMap(response => response.results);
+
+    return {
+        ...responses[0],
+        results: allResults.slice(resultOffset, resultOffset + moviesPerPage),
+        total_pages: Math.ceil(responses[0].total_results / moviesPerPage)
+    };
+};
+
 // Specific functions
 export const fetchPopularMovies = (page = 1, filters = {}, signal) => {
-    return tmdbFetch('/discover/movie', {
-        page,
+    return fetchMoviesPerPage('/discover/movie', page, {
         ...buildFilterParams(filters)
     }, signal);
 };
@@ -107,13 +124,12 @@ export const fetchTopRated = (page = 1, filters = {}) => {
 export const fetchSearchMovies = (query, page = 1, filters = {}, signal) => {
     const params = {
         query,
-        page,
         ...buildFilterParams(filters)
     };
     // Remove sortBy for search as it's not supported by /search/movie
     delete params.sort_by;
-    
-    return tmdbFetch('/search/movie', params, signal);
+
+    return fetchMoviesPerPage('/search/movie', page, params, signal);
 };
 export const fetchMovie = (movieId, signal) => {
     const params = {

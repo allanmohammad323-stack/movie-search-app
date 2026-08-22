@@ -1,6 +1,6 @@
 .contentContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    grid-template-columns: repeat(11, minmax(0, 1fr));
     gap: clamp(0.75rem, 2vw, 1.25rem);
     padding: clamp(0.75rem, 2.5vw, 1.5rem);
     margin-top: 1rem;
@@ -42,13 +42,13 @@
 /* Responsive */
 @media (max-width: 1200px) {
     .contentContainer {
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 165px), 1fr));
+        grid-template-columns: repeat(6, minmax(0, 1fr));
     }
 }
 
 @media (max-width: 992px) {
     .contentContainer {
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 155px), 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 }
 
